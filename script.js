@@ -1,4 +1,4 @@
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = "https://mental-stability-index-4.onrender.com";
 
 const form = document.getElementById("predictForm");
 const submitBtn = document.getElementById("submitBtn");
