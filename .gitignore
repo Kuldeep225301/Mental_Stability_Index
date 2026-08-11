@@ -5,3 +5,6 @@ Lib/
 Scripts/ 
 Include/ 
 pyvenv.cfg 
+__pycache__/ 
+*.pyc 
+
