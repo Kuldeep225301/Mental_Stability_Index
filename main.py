@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware # CORS-> CROSS ORIGIN RESOURC
 
 app = FastAPI(title="Mental Health Score Prediction USing ML FastAPI ")
 
-models = joblib.load(r"C:\py\Mental_Health_Score\Mental_Health_Model.pkl")
+models = joblib.load("Mental_Health_Model.pkl")
 
 app.add_middleware(
     CORSMiddleware,
@@ -77,3 +77,4 @@ def predict_mental_health(data: MentalHealth):
         raise HTTPException(
             status_code=400, detail=f"Error in prediction: {str(e)}"
         )
+
