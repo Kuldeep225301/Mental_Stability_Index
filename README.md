@@ -41,8 +41,8 @@ We trained and evaluated multiple algorithms to predict mental health stability 
 
 ## Live Demo & API Documentation
 
-* **Live Application:** https://mental-stability-indexes.onrender.com/
-* **Interactive API Docs (Swagger UI):** https://mental-stability-indexes.onrender.com/
+* * **Live Application:** [Mental Stability Index on Render](https://mental-stability-index.onrender.com)
+* **Interactive API Docs (Swagger UI):** `https://mental-stability-index.onrender.com/docs`
 
 ---
 
