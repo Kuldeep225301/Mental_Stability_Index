@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mental Health Score Predictor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="page">
+
+  <!-- LEFT: intro + signature breathing orb -->
+  <aside class="intro">
+    <div class="orb-wrap" aria-hidden="true">
+      <svg class="orb" viewBox="0 0 240 240">
+        <circle class="ring ring-1" cx="120" cy="120" r="46" />
+        <circle class="ring ring-2" cx="120" cy="120" r="72" />
+        <circle class="ring ring-3" cx="120" cy="120" r="98" />
+      </svg>
+    </div>
+    <p class="eyebrow">Student wellbeing · ML estimate</p>
+    <h1>How's your headspace<br />holding up?</h1>
+    <p class="intro-copy">
+      Answer a few questions about your habits — screen time, sleep, study
+      load, stress — and a trained model will estimate a mental health
+      score out of 10, the same way it learned from 5,000 student profiles.
+    </p>
+    <ul class="intro-notes">
+      <li><span>01</span> Takes about a minute to fill in</li>
+      <li><span>02</span> Runs against your local FastAPI model</li>
+      <li><span>03</span> Nothing you enter leaves your machine</li>
+    </ul>
+  </aside>
+
+  <!-- RIGHT: form card / result card -->
+  <main class="panel">
+    <div class="card" id="formCard">
+      <header class="card-head">
+        <h2>Tell us about your day-to-day</h2>
+        <p>All fields are required for an accurate estimate.</p>
+      </header>
+
+      <form id="predictForm" novalidate>
+
+        <div class="grid">
+
+          <div class="field">
+            <label for="Age">Age</label>
+            <input type="number" id="Age" name="Age" min="10" max="100" step="1" placeholder="e.g. 21" required />
+            <span class="hint">10–100 years</span>
+            <span class="error" data-error-for="Age"></span>
+          </div>
+
+          <div class="field">
+            <label for="Gender">Gender</label>
+            <select id="Gender" name="Gender" required>
+              <option value="" disabled selected>Select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <span class="error" data-error-for="Gender"></span>
+          </div>
+
+          <div class="field">
+            <label for="Country">Country</label>
+            <input list="countryList" id="Country" name="Country" placeholder="e.g. India" autocomplete="off" required />
+            <datalist id="countryList">
+              <option value="India"></option>
+              <option value="USA"></option>
+              <option value="Canada"></option>
+              <option value="Australia"></option>
+              <option value="UK"></option>
+              <option value="Germany"></option>
+              <option value="Mexico"></option>
+              <option value="Turkey"></option>
+              <option value="France"></option>
+              <option value="Other"></option>
+            </datalist>
+            <span class="hint">Any country — unlisted ones are grouped as "Other"</span>
+            <span class="error" data-error-for="Country"></span>
+          </div>
+
+          <div class="field">
+            <label for="Academic_Level">Academic level</label>
+            <select id="Academic_Level" name="Academic_Level" required>
+              <option value="" disabled selected>Select</option>
+              <option value="High School">High School</option>
+              <option value="Undergraduate">Undergraduate</option>
+              <option value="Graduate">Graduate</option>
+            </select>
+            <span class="error" data-error-for="Academic_Level"></span>
+          </div>
+
+          <div class="field">
+            <label for="Most_Used_Platform">Most used platform</label>
+            <select id="Most_Used_Platform" name="Most_Used_Platform" required>
+              <option value="" disabled selected>Select</option>
+              <option>Facebook</option>
+              <option>Instagram</option>
+              <option>LinkedIn</option>
+              <option>Snapchat</option>
+              <option>Twitter</option>
+              <option>YouTube</option>
+              <option>TikTok</option>
+              <option>LINE</option>
+              <option>KakaoTalk</option>
+              <option>VKontakte</option>
+              <option>WhatsApp</option>
+              <option>WeChat</option>
+            </select>
+            <span class="error" data-error-for="Most_Used_Platform"></span>
+          </div>
+
+          <div class="field">
+            <label for="Purpose_Of_Use">Main purpose of use</label>
+            <select id="Purpose_Of_Use" name="Purpose_Of_Use" required>
+              <option value="" disabled selected>Select</option>
+              <option value="Networking">Networking</option>
+              <option value="Education">Education</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="News">News</option>
+            </select>
+            <span class="error" data-error-for="Purpose_Of_Use"></span>
+          </div>
+
+          <div class="field">
+            <label for="Avg_Daily_Usage_Hours">Avg. daily screen time (hrs)</label>
+            <input type="number" id="Avg_Daily_Usage_Hours" name="Avg_Daily_Usage_Hours" min="0" max="24" step="0.1" placeholder="e.g. 5.2" required />
+            <span class="hint">0–24 hours</span>
+            <span class="error" data-error-for="Avg_Daily_Usage_Hours"></span>
+          </div>
+
+          <div class="field">
+            <label for="Daily_Unlocks">Daily phone unlocks</label>
+            <input type="number" id="Daily_Unlocks" name="Daily_Unlocks" min="0" step="1" placeholder="e.g. 170" required />
+            <span class="hint">0 or more</span>
+            <span class="error" data-error-for="Daily_Unlocks"></span>
+          </div>
+
+          <div class="field">
+            <label for="Study_Hours">Study hours per day</label>
+            <input type="number" id="Study_Hours" name="Study_Hours" min="0" max="24" step="0.1" placeholder="e.g. 3.0" required />
+            <span class="hint">0–24 hours</span>
+            <span class="error" data-error-for="Study_Hours"></span>
+          </div>
+
+          <div class="field">
+            <label for="Physical_Activity_Hours">Physical activity (hrs/day)</label>
+            <input type="number" id="Physical_Activity_Hours" name="Physical_Activity_Hours" min="0" step="0.1" placeholder="e.g. 1.7" required />
+            <span class="hint">0 or more</span>
+            <span class="error" data-error-for="Physical_Activity_Hours"></span>
+          </div>
+
+          <div class="field">
+            <label for="Sleep_Hours_Per_Night">Sleep per night (hrs)</label>
+            <input type="number" id="Sleep_Hours_Per_Night" name="Sleep_Hours_Per_Night" min="0" max="24" step="0.1" placeholder="e.g. 6.6" required />
+            <span class="hint">0–24 hours</span>
+            <span class="error" data-error-for="Sleep_Hours_Per_Night"></span>
+          </div>
+
+          <div class="field">
+            <label for="Stress_Level">Stress level</label>
+            <select id="Stress_Level" name="Stress_Level" required>
+              <option value="" disabled selected>Select</option>
+              <option value="Low">Low</option>
+              <option value="Medium">Medium</option>
+              <option value="High">High</option>
+              <option value="Very High">Very High</option>
+            </select>
+            <span class="error" data-error-for="Stress_Level"></span>
+          </div>
+
+        </div>
+
+        <div class="form-footer">
+          <p class="api-banner" id="apiBanner" hidden></p>
+          <button type="submit" id="submitBtn" class="btn-predict">
+            <span class="btn-label">Predict my score</span>
+            <span class="btn-spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Result card, hidden until a prediction arrives -->
+    <div class="card result-card" id="resultCard" hidden>
+      <button class="btn-back" id="backBtn" type="button">&larr; Edit answers</button>
+
+      <div class="gauge-wrap">
+        <svg class="gauge" viewBox="0 0 200 200">
+          <circle class="gauge-track" cx="100" cy="100" r="86" />
+          <circle class="gauge-fill" id="gaugeFill" cx="100" cy="100" r="86" />
+        </svg>
+        <div class="gauge-center">
+          <span class="gauge-score" id="gaugeScore">0.0</span>
+          <span class="gauge-max">/ 10</span>
+        </div>
+      </div>
+
+      <h2 id="resultLabel">Score received</h2>
+      <p id="resultCopy" class="result-copy"></p>
+
+      <button class="btn-predict btn-secondary" id="tryAgainBtn" type="button">Run another prediction</button>
+    </div>
+
+  </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
